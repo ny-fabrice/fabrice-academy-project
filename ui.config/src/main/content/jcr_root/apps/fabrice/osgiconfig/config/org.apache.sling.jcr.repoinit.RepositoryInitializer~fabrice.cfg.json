@@ -1,0 +1,7 @@
+{
+    "scripts": [
+        "create path (sling:OrderedFolder) /content/dam/fabrice",
+        "create path (nt:unstructured) /content/dam/fabrice/jcr:content",
+        "set properties on /content/dam/fabrice/jcr:content\n  set cq:conf{String} to /conf/fabrice\n  set jcr:title{String} to \"Fabrice Training Project\"\nend"
+    ]
+}

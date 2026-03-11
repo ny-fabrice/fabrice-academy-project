@@ -1,0 +1,2 @@
+#base=js
+random-quote.js

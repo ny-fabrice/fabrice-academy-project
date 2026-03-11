@@ -1,0 +1,38 @@
+<sly
+  data-sly-use.list="com.adobe.cq.wcm.core.components.models.List"
+  data-sly-use.templates="core/wcm/components/commons/v1/templates.html"
+>
+  <sly
+    data-sly-test.titlePrefix="${properties.titlePrefix ? properties.titlePrefix : ''}"
+  />
+  <sly
+    data-sly-test.displayStyle="${properties.displayStyle ? properties.displayStyle : 'simple'}"
+  />
+  <sly
+    data-sly-test.maxItems="${properties.maxItems ? properties.maxItems : 0}"
+  />
+
+  <sly data-sly-test.maxItemsNum="${maxItems @ context='number'}" />
+
+  <sly data-sly-test.allItems="${list.listItems}" />
+
+  <div class="proxy-list">
+    <h3>Proxy List Test</h3>
+    <p>Title Prefix: ${titlePrefix}</p>
+    <p>Display Style: ${displayStyle}</p>
+    <p>Max Items: ${maxItemsNum}</p>
+    <p>Total Items: ${allItems.size}</p>
+
+    <ul>
+      <sly data-sly-list.item="${allItems}">
+        <sly data-sly-test="${itemList.count <= 10}">
+          <li>
+            <a href="${item.path}.html">${titlePrefix}${item.title}</a>
+          </li>
+        </sly>
+      </sly>
+    </ul>
+
+    <sly data-sly-call="${templates.placeholder @ isEmpty=!allItems.size}" />
+  </div>
+</sly>

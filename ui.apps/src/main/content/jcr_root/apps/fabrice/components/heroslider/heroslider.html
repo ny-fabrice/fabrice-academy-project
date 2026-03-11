@@ -1,0 +1,101 @@
+<!--/*
+  Hero Slider Component - Swiper-based slider with multifield slides
+*/-->
+<sly data-sly-use.clientlib="core/wcm/components/commons/v1/templates/clientlib.html"/>
+
+<!-- Swiper 11 from CDN (jsdelivr) - CSS and JS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" data-sly-unwrap/>
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js" data-sly-unwrap></script>
+
+<!-- Hero Slider component styles -->
+<sly data-sly-call="${clientlib.css @ categories='fabrice.heroslider'}"/>
+
+<!-- Force one slide visible: strict viewport + row layout -->
+<style>
+.hero-slider-container { width: 100%; max-width: 100vw; overflow: hidden; box-sizing: border-box; }
+.hero-slider-container .swiper { width: 100% !important; max-width: 100% !important; overflow: hidden !important; box-sizing: border-box !important; }
+.hero-slider-container .swiper-wrapper { display: flex !important; flex-wrap: nowrap !important; box-sizing: border-box !important; }
+.hero-slider-container .swiper-slide { flex-shrink: 0 !important; width: 100% !important; min-width: 100% !important; max-width: 100% !important; overflow: hidden !important; position: relative !important; box-sizing: border-box !important; }
+</style>
+
+<div data-sly-use.slider="it.codeland.fabrice.core.models.HeroSliderModel">
+  <div data-sly-test="${slider.hasSlides}" class="hero-slider-container">
+    <div class="swiper hero-swiper"
+         data-autoplay="${slider.autoplaySpeed}"
+         data-navigation="${slider.showNavigation}">
+      <div class="swiper-wrapper">
+        <div data-sly-list.slide="${slider.slides}" class="swiper-slide">
+          <div class="slide-content" style="background-image: url('${slide.imageUrl @ context='attribute'}')" data-sly-test="${slide.imageUrl}"></div>
+          <div class="slide-content slide-content--placeholder" data-sly-test="${!slide.imageUrl}"></div>
+          <div class="slide-overlay"></div>
+          <div class="slide-text">
+            <h2 data-sly-test="${slide.pretitle}" class="slide-pretitle">${slide.pretitle}</h2>
+            <h1 class="slide-title">${slide.title}</h1>
+            <h3 data-sly-test="${slide.subtitle}" class="slide-subtitle">${slide.subtitle}</h3>
+            <div data-sly-test="${slide.hasCta}" class="slide-cta">
+              <a href="${slide.ctaUrl}" class="cta-button">${slide.ctaText}</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-sly-test="${slider.showNavigation}" class="swiper-button-next"></div>
+      <div data-sly-test="${slider.showNavigation}" class="swiper-button-prev"></div>
+      <div class="swiper-pagination"></div>
+    </div>
+  </div>
+
+  <div data-sly-test="${!slider.hasSlides}" class="hero-slider-placeholder">
+    <p>Configure the Hero Slider: add slides in the component dialog (Slides tab).</p>
+  </div>
+</div>
+
+<!-- Init Hero Slider with Swiper from CDN -->
+<script>
+(function(){
+  var SWIPER_CDN_CSS = "https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css";
+  var SWIPER_CDN_JS = "https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js";
+  function initHeroSliders() {
+    if (typeof Swiper === "undefined") return;
+    var containers = document.querySelectorAll(".hero-slider-container");
+    for (var i = 0; i < containers.length; i++) {
+      var c = containers[i], el = c.querySelector(".swiper");
+      if (!el || el.swiper) continue;
+      var delay = parseInt(el.dataset.autoplay, 10) || 5000, nav = el.dataset.navigation === "true";
+      var pagEl = el.querySelector(".swiper-pagination"), nextEl = el.querySelector(".swiper-button-next"), prevEl = el.querySelector(".swiper-button-prev");
+      var slides = el.querySelectorAll(".swiper-slide");
+      var useLoop = slides && slides.length >= 3;
+      var swiper = new Swiper(el, {
+        slidesPerView: 1,
+        spaceBetween: 0,
+        loop: useLoop,
+        autoplay: { delay: delay, disableOnInteraction: false },
+        pagination: pagEl ? { el: pagEl, clickable: true } : false,
+        navigation: (nav && nextEl && prevEl) ? { nextEl: nextEl, prevEl: prevEl } : {},
+        effect: "slide",
+        speed: 600,
+        observer: true,
+        observeParents: true,
+        resizeObserver: true
+      });
+      if (swiper && swiper.update) swiper.update();
+    }
+  }
+  function run() {
+    if (typeof Swiper !== "undefined") {
+      if (document.readyState === "complete") initHeroSliders();
+      else window.addEventListener("load", initHeroSliders);
+      requestAnimationFrame(function() { initHeroSliders(); });
+    } else {
+      var link = document.createElement("link");
+      link.rel = "stylesheet"; link.href = SWIPER_CDN_CSS;
+      document.head.appendChild(link);
+      var script = document.createElement("script");
+      script.src = SWIPER_CDN_JS;
+      script.onload = function() { window.addEventListener("load", initHeroSliders); requestAnimationFrame(initHeroSliders); };
+      document.head.appendChild(script);
+    }
+  }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", run);
+  else run();
+})();
+</script>

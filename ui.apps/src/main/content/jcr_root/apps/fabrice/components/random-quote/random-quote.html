@@ -1,0 +1,41 @@
+<sly data-sly-use.model="it.codeland.fabrice.core.models.RandomQuoteModel"
+     data-sly-use.templates="core/wcm/components/commons/v1/templates.html" />
+
+<div class="random-quote"
+     data-auto-refresh="${model.autoRefresh}"
+     data-refresh-interval="${model.refreshInterval}"
+     data-component-path="${resource.path}">
+  <!-- Title (if exists) -->
+  <h3 class="random-quote__title" data-sly-test="${model.title}">${model.title}</h3>
+
+  <!-- Quote display -->
+  <div class="random-quote__container" data-sly-test="${!model.empty}">
+    <blockquote class="random-quote__quote">
+      "${model.randomQuote.quote}"
+    </blockquote>
+
+    <div class="random-quote__attribution">
+      <cite class="random-quote__author">
+        — ${model.randomQuote.author}
+      </cite>
+      <span class="random-quote__year" data-sly-test="${model.randomQuote.year}">
+        (${model.randomQuote.year})
+      </span>
+    </div>
+  </div>
+
+  <!-- Fallback if no quotes -->
+  <div class="random-quote__empty" data-sly-test="${model.empty}">
+    <p>No quotes added yet. Please add quotes in the dialog.</p>
+  </div>
+
+  <!-- New Quote Button -->
+  <div class="random-quote__actions" data-sly-test="${!model.empty}">
+    <button class="random-quote__refresh" type="button">
+      New Random Quote
+    </button>
+  </div>
+
+  <!-- Placeholder for authoring -->
+  <sly data-sly-call="${templates.placeholder @ isEmpty=model.empty}" />
+</div>

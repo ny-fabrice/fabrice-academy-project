@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0" 
+          xmlns:cq="http://www.day.com/jcr/cq/1.0" 
+          xmlns:jcr="http://www.jcp.org/jcr/1.0"
+          xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
+          xmlns:granite="http://www.adobe.com/jcr/granite/1.0"
+          jcr:primaryType="nt:unstructured"
+          jcr:title="Proxy List"
+          sling:resourceType="cq/gui/components/authoring/dialog">
+    
+    <content
+        jcr:primaryType="nt:unstructured"
+        sling:resourceType="granite/ui/components/coral/foundation/container">
+        <items jcr:primaryType="nt:unstructured">
+            
+            <!-- Hide the Advanced tab from core component -->
+            <advanced
+                jcr:primaryType="nt:unstructured"
+                sling:hideResource="{Boolean}true"/>
+            
+            <!-- Modify the List tab (main tab) -->
+            <list
+                jcr:primaryType="nt:unstructured"
+                sling:resourceType="granite/ui/components/coral/foundation/container">
+                <items jcr:primaryType="nt:unstructured">
+                    
+                    <!-- HIDE existing fields -->
+                    <!-- Hide the "Link Items" checkbox -->
+                    <linkItems
+                        jcr:primaryType="nt:unstructured"
+                        sling:hideResource="{Boolean}true"/>
+                    
+                    <!-- Hide the "Show Description" checkbox -->
+                    <showDescription
+                        jcr:primaryType="nt:unstructured"
+                        sling:hideResource="{Boolean}true"/>
+                    
+                    <!-- ADD new field: Custom Title Prefix -->
+                    <titlePrefix
+                        jcr:primaryType="nt:unstructured"
+                        sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                        fieldLabel="Title Prefix"
+                        fieldDescription="Text to display before each item title"
+                        name="./titlePrefix"
+                        sling:orderBefore="linkItems"/>
+                    
+                    <!-- ADD new field: Display Style -->
+                    <displayStyle
+                        jcr:primaryType="nt:unstructured"
+                        sling:resourceType="granite/ui/components/coral/foundation/form/select"
+                        fieldLabel="Display Style"
+                        fieldDescription="Choose how to display list items"
+                        name="./displayStyle"
+                        sling:orderBefore="linkItems">
+                        <items jcr:primaryType="nt:unstructured">
+                            <simple
+                                jcr:primaryType="nt:unstructured"
+                                text="Simple"
+                                value="simple"/>
+                            <withDate
+                                jcr:primaryType="nt:unstructured"
+                                text="With Date"
+                                value="withDate"/>
+                        </items>
+                    </displayStyle>
+                    
+                    <!-- ADD new field: Max Items -->
+                    <maxItems
+                        jcr:primaryType="nt:unstructured"
+                        sling:resourceType="granite/ui/components/coral/foundation/form/numberfield"
+                        fieldLabel="Max Items"
+                        fieldDescription="Maximum number of items to display (0 for unlimited)"
+                        name="./maxItems"
+                        min="{Long}0"
+                        max="{Long}100"
+                        value="{Long}5"
+                        sling:orderBefore="linkItems"/>
+                </items>
+            </list>
+        </items>
+    </content>
+</jcr:root>
