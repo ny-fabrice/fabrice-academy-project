@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root
+    xmlns:sling="http://sling.apache.org/jcr/sling/1.0"
+    xmlns:jcr="http://www.jcp.org/jcr/1.0"
+    jcr:primaryType="sling:OsgiConfig"
+
+    org.apache.sling.commons.log.names="[it.codeland.fabrice]"
+    org.apache.sling.commons.log.level="DEBUG"
+
+    org.apache.sling.commons.log.file="logs/project-academy-fabrice.log"
+    org.apache.sling.commons.log.file.size="'2MB'"
+    org.apache.sling.commons.log.file.number="3"
+    org.apache.sling.commons.log.buffered="{Boolean}false"
+/>
